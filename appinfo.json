@@ -1,0 +1,26 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "linus.dillon@gmail.com",
+    "longName": "Resistor Reference",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/Pebble Resistor Colour Code BW Indexed.png",
+                "name": "IMAGE_RESISTOR_REF",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Resistor Reference",
+    "uuid": "15571840-b470-47ed-8a4f-03f0f999328a",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
