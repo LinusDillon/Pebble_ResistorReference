@@ -9,7 +9,7 @@
     "resources": {
         "media": [
             {
-                "file": "images/Pebble Resistor Colour Code BW Indexed.png",
+                "file": "images/Pebble Resistor Colour Code BW.png",
                 "name": "IMAGE_RESISTOR_REF",
                 "type": "png"
             }

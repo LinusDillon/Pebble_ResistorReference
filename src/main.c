@@ -5,7 +5,8 @@
 #include "pebble.h"
 
 static Window *s_main_window;
-static Layer *s_image_layer;
+static ScrollLayer *s_scroll_layer;
+static BitmapLayer *s_image_layer;
 static GBitmap *s_image;
 
 static void layer_update_callback(Layer *layer, GContext* ctx) {
@@ -19,19 +20,31 @@ static void layer_update_callback(Layer *layer, GContext* ctx) {
 }
 
 static void main_window_load(Window *window) {
+  s_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_RESISTOR_REF);
+#ifdef PBL_PLATFORM_BASALT
+  GRect image_size = gbitmap_get_bounds(s_image);
+#else 
+  GRect image_size = s_image->bounds;
+#endif  
+  s_image_layer = bitmap_layer_create(image_size);
+  
+  
   Layer *window_layer = window_get_root_layer(s_main_window);
   GRect bounds = layer_get_frame(window_layer);
-
-  s_image_layer = layer_create(bounds);
-  layer_set_update_proc(s_image_layer, layer_update_callback);
-  layer_add_child(window_layer, s_image_layer);
-
-  s_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_RESISTOR_REF);
+  layer_set_update_proc(bitmap_layer_get_layer(s_image_layer), layer_update_callback);
+  
+  s_scroll_layer = scroll_layer_create(bounds);
+  scroll_layer_set_click_config_onto_window(s_scroll_layer, window);
+  scroll_layer_set_content_size(s_scroll_layer, GSize(bounds.size.w, image_size.size.h));
+  scroll_layer_add_child(s_scroll_layer, bitmap_layer_get_layer(s_image_layer));
+  
+  layer_add_child(window_layer, scroll_layer_get_layer(s_scroll_layer));
 }
 
 static void main_window_unload(Window *window) {
   gbitmap_destroy(s_image);
-  layer_destroy(s_image_layer);
+  bitmap_layer_destroy(s_image_layer);
+  scroll_layer_destroy(s_scroll_layer);
 }
 
 static void init() {
